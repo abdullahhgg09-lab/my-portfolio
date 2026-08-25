@@ -1,0 +1,6 @@
+{
+  "name": "Professional Portfolio & Project Showcase",
+  "description": "A modern, client-ready personal portfolio to showcase projects, manage portfolio entries, highlight skills and services, and receive client inquiries.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
