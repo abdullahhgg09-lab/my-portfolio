@@ -11,6 +11,7 @@ import { ProjectDetailModal } from './components/ProjectDetailModal';
 import { ProjectEditorModal } from './components/ProjectEditorModal';
 import { ProfileEditorModal } from './components/ProfileEditorModal';
 import { InquiriesModal } from './components/InquiriesModal';
+import { PhotoLightboxModal } from './components/PhotoLightboxModal';
 import { AdminTopBar } from './components/AdminTopBar';
 import { AdminAuthModal } from './components/AdminAuthModal';
 import { AdminDashboard } from './components/AdminDashboard';
@@ -107,6 +108,7 @@ export default function App() {
   const [projectToEdit, setProjectToEdit] = useState<Project | null>(null);
   const [isProfileEditorOpen, setIsProfileEditorOpen] = useState(false);
   const [isInquiriesModalOpen, setIsInquiriesModalOpen] = useState(false);
+  const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
 
   // --- Form Prefill Triggers ---
   const [prefilledSubject, setPrefilledSubject] = useState<string>('');
@@ -302,6 +304,7 @@ export default function App() {
         onOpenEditProfile={() => setIsProfileEditorOpen(true)}
         inquiriesCount={unreadInquiriesCount}
         onOpenInquiries={() => setIsInquiriesModalOpen(true)}
+        onOpenPhotoModal={() => setIsPhotoModalOpen(true)}
       />
 
       {/* 3. Main Portfolio Content Sections */}
@@ -313,9 +316,7 @@ export default function App() {
           isVisitorPreview={isVisitorPreview}
           onOpenAddProject={handleOpenAddProject}
           onOpenEditProfile={() => setIsProfileEditorOpen(true)}
-          onUpdateAvatar={(newAvatar) => {
-            setProfile((prev) => ({ ...prev, avatarUrl: newAvatar }));
-          }}
+          onOpenPhotoModal={() => setIsPhotoModalOpen(true)}
         />
 
         {/* Selected Works & Deliverables Showcase */}
@@ -393,6 +394,13 @@ export default function App() {
         profile={profile}
         onClose={() => setIsProfileEditorOpen(false)}
         onSave={handleSaveProfile}
+      />
+
+      {/* C2. High-Res Photo Lightbox Modal (For Visitors & Owner) */}
+      <PhotoLightboxModal
+        isOpen={isPhotoModalOpen}
+        profile={profile}
+        onClose={() => setIsPhotoModalOpen(false)}
       />
 
       {/* D. Client Inquiries Quick Modal */}

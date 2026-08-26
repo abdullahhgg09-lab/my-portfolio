@@ -74,10 +74,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
         <form onSubmit={handleLogin} className="p-6 space-y-5">
           <div className="space-y-1">
             <p className="text-xs text-white/60 font-light leading-relaxed">
-              Enter your secret owner PIN or password to unlock the <strong>Admin Dashboard</strong>, manage projects, edit profile, and view incoming client inquiries.
-            </p>
-            <p className="text-[10px] font-mono text-white/40 pt-1">
-              Default password: <span className="text-white font-bold font-mono">dawood</span> (changeable in Dashboard settings)
+              Enter your secret owner password or PIN to unlock the <strong>Admin Dashboard</strong>, manage projects, edit profile, and view incoming client inquiries.
             </p>
           </div>
 
@@ -91,7 +88,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
           {resetNotice && (
             <div className="p-3 bg-emerald-950/50 border border-emerald-800/50 text-emerald-300 text-xs font-mono flex items-center gap-2">
               <CheckCircle2 className="w-4 h-4 flex-shrink-0" />
-              <span>PIN reset to default: <strong>dawood</strong></span>
+              <span>Password reset to default successfully.</span>
             </div>
           )}
 
@@ -105,7 +102,7 @@ export const AdminAuthModal: React.FC<AdminAuthModalProps> = ({
                 autoFocus
                 value={pinInput}
                 onChange={(e) => setPinInput(e.target.value)}
-                placeholder="Enter PIN (e.g. admin123)"
+                placeholder="Enter your password..."
                 className="w-full px-3.5 py-2.5 text-xs font-mono bg-white/[0.03] border border-white/15 text-white placeholder-white/30 focus:outline-none focus:border-white/50 pr-10"
                 required
               />

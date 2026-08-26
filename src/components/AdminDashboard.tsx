@@ -700,20 +700,28 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                   <label className="block text-[10px] font-mono uppercase tracking-wider text-white/80 font-bold">
                     Portfolio Picture & Frame Image
                   </label>
-                  <span className="text-[9px] font-mono text-white/40">Upload your original photo</span>
+                  <span className="text-[9px] font-mono text-emerald-400 font-bold">● High Resolution Frame</span>
                 </div>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-20 bg-white/5 border border-white/20 overflow-hidden flex-shrink-0 relative">
+                  <div className="w-20 h-24 sm:w-22 sm:h-28 bg-white/5 border border-white/20 overflow-hidden flex-shrink-0 relative group">
                     <img
                       src={profileForm.avatarUrl}
                       alt="Profile preview"
                       referrerPolicy="no-referrer"
                       className="w-full h-full object-cover object-top"
                     />
+                    <button
+                      type="button"
+                      onClick={() => document.getElementById('dash-avatar-upload')?.click()}
+                      className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center gap-1 text-[8px] font-mono uppercase text-white transition-opacity cursor-pointer"
+                    >
+                      <Upload className="w-3.5 h-3.5" />
+                      <span>Change</span>
+                    </button>
                   </div>
 
-                  <div className="flex-1 space-y-2">
+                  <div className="flex-1 space-y-2.5">
                     <div>
                       <input
                         type="file"
@@ -737,20 +745,20 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
                       <button
                         type="button"
                         onClick={() => document.getElementById('dash-avatar-upload')?.click()}
-                        className="px-3 py-1.5 bg-white text-black text-[10px] font-mono uppercase font-bold tracking-wider hover:bg-[#E0E0E0] transition-colors cursor-pointer inline-flex items-center gap-1.5"
+                        className="px-3.5 py-2 bg-white text-black text-[10px] font-mono uppercase font-bold tracking-wider hover:bg-[#E0E0E0] transition-colors cursor-pointer inline-flex items-center gap-1.5 shadow-md"
                       >
                         <Upload className="w-3.5 h-3.5" />
-                        <span>Upload from Device</span>
+                        <span>Upload New Picture (PC / Phone)</span>
                       </button>
                     </div>
 
                     <div className="space-y-1">
-                      <span className="text-[9px] font-mono text-white/40 uppercase">Image URL or Local Path:</span>
+                      <span className="text-[9px] font-mono text-white/40 uppercase">Or Custom Image URL / Local file path:</span>
                       <input
                         type="text"
                         value={profileForm.avatarUrl}
                         onChange={(e) => setProfileForm({ ...profileForm, avatarUrl: e.target.value })}
-                        placeholder="Image URL or /avatar.jpg"
+                        placeholder="Image URL (e.g. /avatar.jpg or https://...)"
                         className="w-full px-3.5 py-1.5 text-xs font-mono bg-white/[0.03] border border-white/10 text-white focus:outline-none focus:border-white/40"
                       />
                     </div>

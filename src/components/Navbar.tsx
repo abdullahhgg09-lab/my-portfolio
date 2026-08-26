@@ -11,6 +11,7 @@ interface NavbarProps {
   onOpenEditProfile?: () => void;
   inquiriesCount?: number;
   onOpenInquiries?: () => void;
+  onOpenPhotoModal?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -22,6 +23,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenEditProfile,
   inquiriesCount = 0,
   onOpenInquiries,
+  onOpenPhotoModal,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -55,19 +57,20 @@ export const Navbar: React.FC<NavbarProps> = ({
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between">
-          {/* Brand Logo */}
-          <a
-            id="brand-logo-link"
-            href="#"
-            className="flex items-center gap-3 group focus:outline-none"
-          >
-            <div className="relative">
+          {/* Brand Logo & Avatar */}
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={onOpenPhotoModal}
+              className="relative group focus:outline-none cursor-pointer block"
+              title="Click to view full profile photo"
+            >
               {profile.avatarUrl ? (
                 <img
                   src={profile.avatarUrl}
                   alt={profile.name}
                   referrerPolicy="no-referrer"
-                  className="w-9 h-9 object-cover border border-white/20 group-hover:border-white/60 transition-colors"
+                  className="w-9 h-9 object-cover border border-white/20 group-hover:border-white/70 group-hover:scale-105 transition-all shadow-md"
                 />
               ) : (
                 <div className="w-9 h-9 border border-white/20 bg-white/5 flex items-center justify-center text-sm font-semibold tracking-tighter text-white group-hover:border-white/60 transition-colors">
@@ -77,9 +80,13 @@ export const Navbar: React.FC<NavbarProps> = ({
               {profile.availableForWork && (
                 <span className="absolute -bottom-0.5 -right-0.5 w-2 h-2 bg-orange-500 rounded-full ring-2 ring-[#0A0A0A]" title="Available for commissions" />
               )}
-            </div>
+            </button>
 
-            <div>
+            <a
+              id="brand-logo-link"
+              href="#"
+              className="group focus:outline-none"
+            >
               <div className="flex items-center gap-2">
                 <span className="text-xs tracking-[0.25em] font-bold text-white/40 uppercase block">
                   {profile.title.split(' ')[0] || 'ENGINEER'}
@@ -88,8 +95,8 @@ export const Navbar: React.FC<NavbarProps> = ({
               <h1 className="text-sm font-medium tracking-tight text-white group-hover:text-white/80 transition-colors uppercase">
                 {profile.name}
               </h1>
-            </div>
-          </a>
+            </a>
+          </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8 text-[11px] tracking-[0.2em] font-semibold text-white/60">

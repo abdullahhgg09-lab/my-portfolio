@@ -1,5 +1,5 @@
-import React, { useRef, useState } from 'react';
-import { ArrowRight, FolderGit2, Mail, Github, Linkedin, Twitter, MessageCircle, Code, Server, ShieldCheck, Camera, Upload, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { ArrowRight, FolderGit2, Mail, Github, Linkedin, Twitter, MessageCircle, Code, Server, ShieldCheck, Maximize2 } from 'lucide-react';
 import { Profile } from '../types';
 
 interface HeroProps {
@@ -8,7 +8,7 @@ interface HeroProps {
   isVisitorPreview?: boolean;
   onOpenAddProject?: () => void;
   onOpenEditProfile?: () => void;
-  onUpdateAvatar?: (avatarUrl: string) => void;
+  onOpenPhotoModal?: () => void;
 }
 
 export const Hero: React.FC<HeroProps> = ({
@@ -17,55 +17,9 @@ export const Hero: React.FC<HeroProps> = ({
   isVisitorPreview = false,
   onOpenAddProject,
   onOpenEditProfile,
-  onUpdateAvatar,
+  onOpenPhotoModal,
 }) => {
   const showAdminControls = isAdmin && !isVisitorPreview;
-  const fileInputRef = useRef<HTMLInputElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      processImageFile(file);
-    }
-  };
-
-  const processImageFile = (file: File) => {
-    if (!file.type.startsWith('image/')) {
-      alert('Please upload a valid image file (JPEG, PNG, WebP).');
-      return;
-    }
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result as string;
-      if (dataUrl && onUpdateAvatar) {
-        onUpdateAvatar(dataUrl);
-        setUploadSuccess(true);
-        setTimeout(() => setUploadSuccess(false), 3000);
-      }
-    };
-    reader.readAsDataURL(file);
-  };
-
-  const handleDragOver = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(true);
-  };
-
-  const handleDragLeave = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-  };
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    setIsDragging(false);
-    const file = e.dataTransfer.files?.[0];
-    if (file) {
-      processImageFile(file);
-    }
-  };
 
   const topTech = [
     'React 19',
@@ -214,55 +168,38 @@ export const Hero: React.FC<HeroProps> = ({
 
                 {/* Header Profile Summary & Picture Frame */}
                 <div className="py-5 border-b border-white/10">
-                  {/* Hidden File Input for Direct Picture Upload */}
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileChange}
-                    accept="image/*"
-                    className="hidden"
-                  />
-
-                  <div className="flex items-start gap-4">
-                    {/* Picture Frame with Interactive Upload Trigger */}
-                    <div
-                      onDragOver={handleDragOver}
-                      onDragLeave={handleDragLeave}
-                      onDrop={handleDrop}
-                      className={`relative group flex-shrink-0 transition-all ${
-                        isDragging ? 'ring-2 ring-white scale-105' : ''
-                      }`}
-                    >
-                      <div className="w-20 h-24 sm:w-24 sm:h-28 overflow-hidden bg-white/5 border border-white/20 group-hover:border-white/60 shadow-xl transition-all relative">
+                  <div className="flex items-center gap-4">
+                    {/* Picture Frame with Click-to-View Feature */}
+                    <div className="relative flex-shrink-0">
+                      <button
+                        type="button"
+                        onClick={onOpenPhotoModal}
+                        className="w-20 h-24 sm:w-22 sm:h-26 overflow-hidden bg-white/5 border border-white/20 hover:border-white/60 shadow-xl transition-all block cursor-pointer group relative text-left focus:outline-none focus:ring-1 focus:ring-white/50"
+                        title="Click to view full photo"
+                      >
                         <img
                           src={profile.avatarUrl}
                           alt={profile.name}
                           referrerPolicy="no-referrer"
-                          className="w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                          className="w-full h-full object-cover object-top transition-transform duration-300 group-hover:scale-105"
                         />
-                        {/* Hover Overlay to Change / Upload Original Photo */}
-                        <button
-                          type="button"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="absolute inset-0 bg-black/70 backdrop-blur-[2px] opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center gap-1 transition-opacity cursor-pointer text-white p-1 text-center"
-                          title="Click to select or drag & drop your original photo"
-                        >
-                          <Camera className="w-4 h-4 text-white" />
-                          <span className="text-[8px] font-mono uppercase tracking-wider font-semibold">Change Photo</span>
-                        </button>
-                      </div>
+                        {/* Hover hint */}
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                          <Maximize2 className="w-4 h-4 text-white drop-shadow-md" />
+                        </div>
+                      </button>
 
                       {/* Online Status Beacon */}
                       {profile.availableForWork && (
                         <span
-                          className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full ring-2 ring-[#0E0E0E]"
+                          className="absolute -bottom-1 -right-1 w-3 h-3 bg-emerald-500 rounded-full ring-2 ring-[#0E0E0E] pointer-events-none"
                           title="Active & Available for commissions"
                         />
                       )}
                     </div>
 
-                    {/* Profile Information & Actions */}
-                    <div className="flex-1 min-w-0 pt-0.5">
+                    {/* Profile Information */}
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <h3 className="text-base sm:text-lg font-semibold tracking-tight text-white truncate uppercase">
                           {profile.name}
@@ -272,29 +209,10 @@ export const Hero: React.FC<HeroProps> = ({
                       <p className="text-xs text-white/70 font-light truncate mt-0.5">
                         {profile.title}
                       </p>
-                      <p className="text-[11px] text-white/40 flex items-center gap-1.5 mt-1 font-mono">
+                      <p className="text-[11px] text-white/40 flex items-center gap-1.5 mt-1.5 font-mono">
                         <span className="w-1.5 h-1.5 bg-orange-500 inline-block"></span>
                         {profile.location}
                       </p>
-
-                      {/* Photo Upload Shortcut / Drag-and-Drop Prompt */}
-                      <div className="mt-3 flex items-center gap-2">
-                        <button
-                          type="button"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/15 text-[9px] font-mono uppercase tracking-wider transition-colors cursor-pointer"
-                        >
-                          <Upload className="w-3 h-3" />
-                          <span>Upload Original Photo</span>
-                        </button>
-                      </div>
-
-                      {uploadSuccess && (
-                        <div className="mt-2 text-[10px] font-mono text-emerald-400 flex items-center gap-1">
-                          <CheckCircle2 className="w-3 h-3" />
-                          <span>Photo updated successfully!</span>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
